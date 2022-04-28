@@ -1,0 +1,63 @@
+// ondialogresponse
+	if(dialogid == 6667)
+	{
+		if(response)
+		{
+		    SetPVarInt(playerid, "cam", 1);
+			SelectTextDraw(playerid, -1);
+			SetPlayerInterior(playerid, 0);
+			SetPlayerVirtualWorld(playerid, 0);
+		    switch(listitem)
+		    {
+		        case 0:
+		        {
+					SetPlayerCameraPos(playerid, 1481.2432,-1750.5411,31.6201);
+					SetPlayerCameraLookAt(playerid, 1476.8547,-1703.0629,15.3347);
+				}
+  				case 1:
+		        {
+					SetPlayerCameraPos(playerid, 1333.7888,-1291.4896,27.6793);
+					SetPlayerCameraLookAt(playerid, 1358.3297,-1281.7257,13.3026);
+				}
+				case 2:
+		        {
+					SetPlayerCameraPos(playerid, 1219.6646,-1317.1394,25.6249);
+					SetPlayerCameraLookAt(playerid, 1182.7656,-1321.6532,13.5781);
+				}
+				case 3:
+		        {
+					SetPlayerCameraPos(playerid, 1505.3818,-1670.7914,34.6300);
+					SetPlayerCameraLookAt(playerid, 1545.6671,-1671.6172,20.4154);
+				}
+		    }
+		}
+	}
+
+
+// onplayerclicktextdraw
+    if(clickedid == Text:INVALID_TEXT_DRAW && GetPVarInt(playerid, "cam") == 1)
+	{
+		SetCameraBehindPlayer(playerid);
+		SetPVarInt(playerid, "cam", 0);
+		CancelSelectTextDraw(playerid);
+		SetPlayerInterior(playerid, GetPVarInt(playerid, "int"));
+		SetPlayerVirtualWorld(playerid, GetPVarInt(playerid, "vw"));
+	}
+
+
+// commands
+CMD:camera(playerid, params[])
+{
+//	if(!IsPlayerInRangeOfPoint(playerid, 5.0, /* tkveni pozicia ( /save ) */)) return 1;
+	if(GetPVarInt(playerid, "cam") == 1)
+	{
+		SetCameraBehindPlayer(playerid), CancelSelectTextDraw(playerid), SetPVarInt(playerid, "cam", 0);
+		SetPlayerInterior(playerid, GetPVarInt(playerid, "int"));
+		SetPlayerVirtualWorld(playerid, GetPVarInt(playerid, "vw"));
+		return 1;
+	}
+	ShowPlayerDialog(playerid, 6667, DIALOG_STYLE_LIST, "Camera | list", "[1] Meria\n[2] Gun Shop\n[3] Hospital\n[4] LSPD", "Open", "Exit");
+	SetPVarInt(playerid, "int", GetPlayerInterior(playerid));
+	SetPVarInt(playerid, "vw", GetPlayerVirtualWorld(playerid));
+	return 1;
+}
